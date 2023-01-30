@@ -1,44 +1,44 @@
 class UsersController < ApplicationController
-    skip_before_action :authenticate_request, only: [:create]
-    before_action :set_user, only: [:show, :destroy]
+  skip_before_action :authenticate_request, only: [:create]
+  before_action :set_user, only: %i[show destroy]
 
-    def index
-        @users = User.all
-        render json: @users, status: :ok
+  def index
+    @users = User.all
+    render json: @users, status: :ok
+  end
+
+  def show
+    render json: @user, status: :ok
+  end
+
+  def create
+    @user = User.new(user_params)
+    if @user.save
+      render json: @user, status: :created
+    else
+      render json: { errors: @user.errors.full_messages },
+             status: :unprocessable_entity
     end
+  end
 
-    def show
-        render json: @user, status: :ok
-    end
+  def update
+    return if @user.update(user_params)
 
-    def create
-        @user = User.new(user_params)
-        if @user.save
-            render json: @user, status: :created
-        else
-            render json: { errors: @user.errors.full_messages },
-                    status: :unprocessable_entity
-        end
-    end
+    render json: { errors: @user.errors.full_messages },
+           status: :unprocessable_entity
+  end
 
-    def update
-        unless @user.update(user_params)
-            render json: { errors: @user.errors.full_messages },
-                    status: :unprocessable_entity
-        end
-    end
+  def destroy
+    @user.destroy
+  end
 
-    def destroy
-        @user.destroy
-    end
+  private
 
-    private
+  def user_params
+    params.permit(:phone, :email, :password)
+  end
 
-    def user_params
-        params.permit(:phone, :email, :password)
-    end
-
-    def set_user
-        @user = User.find(params[:id])
-    end
+  def set_user
+    @user = User.find(params[:id])
+  end
 end

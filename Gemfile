@@ -48,6 +48,6 @@ end
 
 # project related
 
-gem 'rubocop', '>= 1.0', '< 2.0'
-gem 'jwt'
 gem 'bcrypt', '~> 3.1.7'
+gem 'jwt'
+gem 'rubocop', '>= 1.0', '< 2.0'
