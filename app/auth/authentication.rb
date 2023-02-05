@@ -1,13 +1,13 @@
 class Authentication
   def initialize(user_object)
     @phone = user_object[:phone]
-    # byebug
     @password = user_object[:password]
+    # @password = 'abc@123'
     @user = User.find_by_phone(@phone)
   end
 
   def authenticate
-    !@user&.authenticate(@password)
+    @user&.authenticate(@password)
   end
 
   def generate_token

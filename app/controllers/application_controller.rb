@@ -1,17 +1,4 @@
 class ApplicationController < ActionController::API
-  # include JsonWebToken
-  # before_action :authenticate_request
-
-  # private
-
-  # def authenticate_request
-  #   byebug
-  #   header = request.headers['Authorization']
-  #   header = header.split.last if header
-  #   decoded = jwt_decode(header)
-  #   @current_user = User.find(decoded[:user_id])
-  # end
-
   include ExceptionHandler
   def authorize_request
     return if logged_in?
@@ -27,8 +14,8 @@ class ApplicationController < ActionController::API
     !!authorization_object.current_user
   end
 
-  def login(params, type)
-    auth_object = Authentication.new(params)
+  def login(user, type)
+    auth_object = Authentication.new(user)
     # byebug
     if type == 'auth'
       auth_object.authenticate
