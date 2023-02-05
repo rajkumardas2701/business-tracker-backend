@@ -1,13 +1,24 @@
 class AuthenticationController < ApplicationController
-  skip_before_action :authenticate_request
-
-  def login
-    @user = User.find_by_phone(params[:phone])
-    if @user&.authenticate(params[:password])
-      token = jwt_encode(user_id: @user.id)
-      render json: { token: }, status: :ok
+  def create
+    @user = User.find_by_phone(session_params[:phone])
+    if login(@user, 'auth')
+      render json: {
+        logged_in: true,
+        user: @user.attributes.except('password_digest', 'phone', 'email'),
+        message: ['User has logged in successfully'],
+        token: login(session_params, 'token')
+      }
     else
-      render json: { error: 'unauthoried' }, status: :unauthoried
+      render json: {
+               message: 'Incorrect username or password'
+             },
+             status: :unauthorized
     end
+  end
+
+  private
+
+  def session_params
+    params.permit(:phone, :password)
   end
 end
