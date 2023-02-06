@@ -49,7 +49,7 @@ end
 
 # project related
 
-gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1', '>= 3.1.7', platforms: :ruby
 gem 'jwt'
 gem 'rack-cors'
 gem 'rubocop', '>= 1.0', '< 2.0'

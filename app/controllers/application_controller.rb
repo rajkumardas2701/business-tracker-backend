@@ -14,13 +14,12 @@ class ApplicationController < ActionController::API
     !!authorization_object.current_user
   end
 
-  def login(user, type)
-    auth_object = Authentication.new(user)
-    # byebug
+  def login(params, user, type)
+    auth_object = Authentication.new(params)
     if type == 'auth'
-      auth_object.authenticate
+      auth_object.authenticate(user)
     else
-      auth_object.generate_token
+      auth_object.generate_token(user)
     end
   end
 

@@ -1,12 +1,12 @@
 class AuthenticationController < ApplicationController
   def create
-    @user = user_by_phone
-    if @user && login(@user, 'auth')
+    @user = set_user
+    if @user && login(session_params, @user, 'auth')
       render json: {
                logged_in: true,
                user: @user.attributes.except('password_digest', 'phone', 'email'),
                message: 'User has logged in successfully',
-               token: login(session_params, 'token')
+               token: login(session_params, @user, 'token')
              },
              status: :ok
     else
@@ -23,11 +23,10 @@ class AuthenticationController < ApplicationController
   private
 
   def session_params
-    # byebug
     params.require(:user).permit(:phone, :password)
   end
 
-  def user_by_phone
-    User.find_by_phone(session_params[:phone])
+  def set_user
+    User.find_by(phone: session_params[:phone])
   end
 end

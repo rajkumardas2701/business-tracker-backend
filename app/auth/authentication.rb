@@ -1,16 +1,17 @@
 class Authentication
-  def initialize(user_object)
-    @phone = user_object[:phone]
-    @password = user_object[:password]
-    # @password = 'abc@123'
-    @user = User.find_by_phone(@phone)
+  def initialize(params)
+    @phone = params[:phone]
+    @password = params[:password]
   end
 
-  def authenticate
-    @user&.authenticate(@password)
+  def authenticate(user)
+    # return user if user.password_digest == @password
+    # byebug
+    user&.authenticate(@password)
+    # false
   end
 
-  def generate_token
-    JsonWebToken.encode(user_id: @user.id)
+  def generate_token(user)
+    JsonWebToken.encode(user_id: user[:id])
   end
 end
