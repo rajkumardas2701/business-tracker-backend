@@ -6,6 +6,4 @@ Rails.application.routes.draw do
   resources :users
   post '/auth/login', to: 'authentication#create'
   post '/auth/signup', to: 'users#create'
-
-  # :except => [:create]
 end
