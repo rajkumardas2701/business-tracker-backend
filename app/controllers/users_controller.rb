@@ -1,47 +1,5 @@
 class UsersController < ApplicationController
-  # skip_before_action :authenticate_request, only: [:create]
-  # before_action :set_user, only: %i[show destroy update]
-
-  # def index
-  #   @users = User.all
-  #   render json: @users, status: :ok
-  # end
-
-  # def show
-  #   render json: @user, status: :ok
-  # end
-
-  # def create
-  #   @user = User.new(user_params)
-  #   if @user.save
-  #     render json: @user, status: :created
-  #   else
-  #     render json: { errors: @user.errors.full_messages },
-  #            status: :unprocessable_entity
-  #   end
-  # end
-
-  # def update
-  #   return if @user.update(user_params)
-
-  #   render json: { errors: @user.errors.full_messages },
-  #          status: :unprocessable_entity
-  # end
-
-  # def destroy
-  #   @user.destroy
-  # end
-
-  # private
-
-  # def user_params
-  #   params.permit(:phone, :email, :password, :name)
-  # end
-
-  # def set_user
-  #   @user = User.find(params[:id])
-  # end
-
+  before_action :authorize_request, except: :create
   before_action :check_user, only: %i[show update destroy]
 
   def index
@@ -93,19 +51,19 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      login!
+      login(user_params, @user, 'auth')
       render json: {
-               status: :created,
-               user: @user.attributes.except('password_digest'),
-               message: ['User is created']
+               logged_in: true,
+               user: @user.attributes.except('password_digest', 'phone', 'email'),
+               message: 'You have successfully signed up to the service',
+               token: login(user_params, @user, 'token')
              },
-             status: 200
+             status: :created
     else
       render json: {
-               errors: @user.errors.full_messages,
-               status: 403
+               message: @user.errors.full_messages[0]
              },
-             status: 403
+             status: 400
     end
   end
 
@@ -149,6 +107,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:name, :phone, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :phone, :email, :password)
   end
 end
