@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  vehicle_date: MyString
+  f_name: MyString
+  f_quantiy: 1.5
+  f_choot: 1.5
+  f_rate: 9.99
+  d_name: MyString
+  d_quantity: 1.5
+  d_choot: 1.5
+  d_rate: 9.99
+  f_actual_amount: 9.99
+  d_actual_amount: 9.99
+  balance: 9.99
+
+two:
+  vehicle_date: MyString
+  f_name: MyString
+  f_quantiy: 1.5
+  f_choot: 1.5
+  f_rate: 9.99
+  d_name: MyString
+  d_quantity: 1.5
+  d_choot: 1.5
+  d_rate: 9.99
+  f_actual_amount: 9.99
+  d_actual_amount: 9.99
+  balance: 9.99
