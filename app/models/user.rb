@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :financial_transactions
-  has_many :deals, :through => financial_transactions
+  has_many :deals, :through => :financial_transactions
 
   validates :name, presence: true
   validates :password, presence: true
