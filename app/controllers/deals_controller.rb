@@ -2,7 +2,22 @@ class DealsController < ApplicationController
   # before_action :authorize_request
   before_action :fetch_deal, except: :create
 
-  def index; end
+  def index
+    @deals = Deal.all
+    if @deals
+      render json: {
+        deals: @deals,
+        message: 'Deals fetched successfully'
+      },
+      status: :ok
+    else
+      render json: {
+        message: @deal.errors.full_messages,
+        deals: {}
+      },
+      status: 500
+    end
+  end
 
   def show
     if @deal
