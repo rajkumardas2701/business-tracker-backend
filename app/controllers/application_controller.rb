@@ -4,7 +4,10 @@ class ApplicationController < ActionController::API
     return if logged_in?
 
     render json: {
-             message: 'Please log in'
+             logged_in: false,
+             user: {},
+             message: 'Please login to continue',
+             token: ''
            },
            status: :unauthorized
   end
