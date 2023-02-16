@@ -13,7 +13,7 @@ class DealsController < ApplicationController
     else
       render json: {
                message: @deal.errors.full_messages,
-               deals: {}
+               deals: []
              },
              status: 500
     end
@@ -28,7 +28,7 @@ class DealsController < ApplicationController
              status: :ok
     else
       render json: {
-               deals: {},
+               deals: [],
                message: 'Deal does not exist'
              },
              status: 404
@@ -45,7 +45,7 @@ class DealsController < ApplicationController
              status: :ok
     else
       render json: {
-               deals: {},
+               deals: [],
                message: @deal.errors.full_messages
              },
              status: 500
