@@ -14,6 +14,7 @@ class ApplicationController < ActionController::API
 
   def logged_in?
     authorization_object = Authorization.new(request)
+    # byebug
     !!authorization_object.current_user
   end
 

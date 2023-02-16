@@ -1,34 +1,34 @@
 class DealsController < ApplicationController
-  # before_action :authorize_request
-  before_action :fetch_deal, except: :create
+  before_action :authorize_request
+  before_action :fetch_deal, except: %i[create index]
 
   def index
     @deals = Deal.all
     if @deals
       render json: {
-        deals: @deals,
-        message: 'Deals fetched successfully'
-      },
-      status: :ok
+               deals: @deals,
+               message: 'Deals fetched successfully'
+             },
+             status: :ok
     else
       render json: {
-        message: @deal.errors.full_messages,
-        deals: {}
-      },
-      status: 500
+               message: @deal.errors.full_messages,
+               deals: {}
+             },
+             status: 500
     end
   end
 
   def show
     if @deal
       render json: {
-               deal: @deal,
+               deals: @deal,
                message: 'Deals fetched successfully'
              },
              status: :ok
     else
       render json: {
-               deal: {},
+               deals: {},
                message: 'Deal does not exist'
              },
              status: 404
@@ -39,13 +39,13 @@ class DealsController < ApplicationController
     @deal = Deal.new(modify_deal_attributes(jobs_params).except(:vehicle, :date))
     if @deal.save
       render json: {
-               deal: @deal,
+               deals: Deal.all,
                message: 'Deal is successfully created'
              },
              status: :ok
     else
       render json: {
-               deal: {},
+               deals: {},
                message: @deal.errors.full_messages
              },
              status: 500
@@ -59,18 +59,18 @@ class DealsController < ApplicationController
   private
 
   def jobs_params
-    params.permit(:vehicle,
-                  :date,
-                  :f_name,
-                  :f_quantiy,
-                  :f_choot,
-                  :f_rate,
-                  :d_name,
-                  :d_quantity,
-                  :d_choot,
-                  :d_rate,
-                  :f_actual_amount,
-                  :d_actual_amount)
+    params.require(:formData).permit(:vehicle,
+                                     :date,
+                                     :f_name,
+                                     :f_quantiy,
+                                     :f_choot,
+                                     :f_rate,
+                                     :d_name,
+                                     :d_quantity,
+                                     :d_choot,
+                                     :d_rate,
+                                     :f_actual_amount,
+                                     :d_actual_amount)
   end
 
   def fetch_deal
