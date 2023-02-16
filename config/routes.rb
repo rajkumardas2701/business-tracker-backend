@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   resources :financial_transactions
   post '/auth/login', to: 'authentication#create'
   post '/auth/signup', to: 'users#create'
+  get '/side_transactions', to: 'financial_transactions#side_transactions'
 end
