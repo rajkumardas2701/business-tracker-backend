@@ -14,7 +14,6 @@ class ApplicationController < ActionController::API
 
   def logged_in?
     authorization_object = Authorization.new(request)
-    # byebug
     !!authorization_object.current_user
   end
 
@@ -34,5 +33,9 @@ class ApplicationController < ActionController::API
 
   def set_user
     User.find(current_user)
+  end
+
+  def sort_by_date
+    FinancialTransaction.order(date: :desc)
   end
 end

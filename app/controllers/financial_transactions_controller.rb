@@ -5,8 +5,9 @@ class FinancialTransactionsController < ApplicationController
   def index
     @ft = FinancialTransaction.all
     if @ft
+      txs = sort_by_date
       render json: {
-               fts: @ft,
+               fts: txs,
                message: 'Transactions fetched successfully'
              },
              status: :ok
@@ -42,8 +43,9 @@ class FinancialTransactionsController < ApplicationController
   def create
     @tx = FinancialTransaction.new(transactions_params)
     if @tx.save
+      txs = sort_by_date
       render json: {
-               fts: FinancialTransaction.all,
+               fts: txs,
                message: 'Transaction is successfully created'
              },
              status: :ok
@@ -56,7 +58,22 @@ class FinancialTransactionsController < ApplicationController
     end
   end
 
-  def update; end
+  def update
+    if @tx.update(transactions_params)
+      txs = sort_by_date
+      render json: {
+               fts: txs,
+               message: 'Transaction is successfully updated'
+             },
+             status: :ok
+    else
+      render json: {
+               fts: [],
+               message: @tx.errors.full_messages
+             },
+             status: 500
+    end
+  end
 
   def destroy; end
 
@@ -71,5 +88,9 @@ class FinancialTransactionsController < ApplicationController
                                      :remark,
                                      :user_id,
                                      :deal_id)
+  end
+
+  def fetch_transaction
+    @tx = FinancialTransaction.find(params[:id])
   end
 end

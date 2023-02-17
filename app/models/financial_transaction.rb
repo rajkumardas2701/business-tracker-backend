@@ -9,6 +9,7 @@ class FinancialTransaction < ApplicationRecord
   validates :remark, presence: true
 
   def filter_side_transactions
-    FinancialTransaction.where(deal_id: nil)
+    txs = FinancialTransaction.where(deal_id: nil)
+    txs.order(date: :desc)
   end
 end
