@@ -75,7 +75,22 @@ class FinancialTransactionsController < ApplicationController
     end
   end
 
-  def destroy; end
+  def destroy
+    if @tx.delete
+      txs = sort_by_date
+      render json: {
+               fts: txs,
+               message: 'Transaction is successfully deleted'
+             },
+             status: :ok
+    else
+      render json: {
+               fts: [],
+               message: @tx.errors.full_messages
+             },
+             status: 500
+    end
+  end
 
   private
 
