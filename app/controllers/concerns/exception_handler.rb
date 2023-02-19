@@ -8,13 +8,19 @@ module ExceptionHandler
   included do
     rescue_from ExceptionHandler::DecodeError do |_error|
       render json: {
-        message: 'Access denied!. Invalid token supplied'
+        logged_in: false,
+        user: {},
+        message: 'Access denied as Invalid token supplied. Please login again',
+        token: ''
       }, status: :unauthorized
     end
 
     rescue_from ExceptionHandler::ExpiredSignature do |_error|
       render json: {
-        message: 'Access denied!. Token has expired.'
+        logged_in: false,
+        user: {},
+        message: 'Access denied as Token has expired. Please login again',
+        token: ''
       }, status: :unauthorized
     end
   end
