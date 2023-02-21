@@ -7,9 +7,4 @@ class FinancialTransaction < ApplicationRecord
   validates :amount, presence: true
   validates :action_by, presence: true
   validates :remark, presence: true
-
-  def filter_side_transactions
-    txs = FinancialTransaction.where(deal_id: nil)
-    txs.order(date: :desc)
-  end
 end
