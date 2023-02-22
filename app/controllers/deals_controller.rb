@@ -1,6 +1,7 @@
 class DealsController < ApplicationController
   before_action :authorize_request
   before_action :fetch_deal, except: %i[create index]
+  rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
     @deals = Deal.all
@@ -36,7 +37,7 @@ class DealsController < ApplicationController
   end
 
   def create
-    @deal = Deal.new(modify_deal_attributes(jobs_params).except(:vehicle, :date))
+    @deal = Deal.new(modify_deal_attributes(deals_params).except(:vehicle, :date))
     if @deal.save
       render json: {
                deals: Deal.all,
@@ -52,14 +53,43 @@ class DealsController < ApplicationController
     end
   end
 
-  def update; end
+  def update
+    if @deal.update(deals_params)
+      render json: {
+               deals: Deal.all,
+               message: 'Deal is updated'
+             },
+             status: :ok
+    else
+      render json: {
+               deals: [],
+               message: @deal.errors.full_messages
+             },
+             status: 500
+    end
+  end
 
-  def destroy; end
+  def destroy
+    if @deal.delete
+      render json: {
+               deals: Deal.all,
+               message: 'Deal is successfully deleted'
+             },
+             status: :ok
+    else
+      render json: {
+               deals: [],
+               message: @deal.errors.full_messages
+             },
+             status: 500
+    end
+  end
 
   private
 
-  def jobs_params
-    params.require(:formData).permit(:vehicle,
+  def deals_params
+    params.require(:formData).permit(:id,
+                                     :vehicle,
                                      :date,
                                      :f_name,
                                      :f_quantiy,
@@ -70,15 +100,24 @@ class DealsController < ApplicationController
                                      :d_choot,
                                      :d_rate,
                                      :f_actual_amount,
-                                     :d_actual_amount)
+                                     :d_actual_amount,
+                                     :vehicle_date)
   end
 
   def fetch_deal
-    @deal = Deal.find_by(id: jobs_params[:id])
+    @deal = Deal.find(params[:id])
   end
 
-  def modify_deal_attributes(jobs_params)
-    vehicle_date = { vehicle_date: jobs_params[:vehicle] + jobs_params[:date].gsub(/[^0-9a-zA-Z]/, '') }
-    jobs_params.merge!(vehicle_date)
+  def modify_deal_attributes(deals_params)
+    vehicle_date = { vehicle_date: deals_params[:vehicle] + deals_params[:date].gsub(/[^0-9a-zA-Z]/, '') }
+    deals_params.merge!(vehicle_date)
+  end
+
+  def invalid_foreign_key
+    render json: {
+             deals: [],
+             message: 'Delete associated Transactions first'
+           },
+           status: :unprocessable_entity
   end
 end
