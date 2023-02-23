@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_16_171352) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_23_103451) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,8 +24,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_16_171352) do
     t.float "d_quantity"
     t.float "d_choot"
     t.decimal "d_rate"
-    t.decimal "f_actual_amount"
-    t.decimal "d_actual_amount"
+    t.decimal "vehicle_fare"
+    t.decimal "labour_charge"
     t.decimal "balance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

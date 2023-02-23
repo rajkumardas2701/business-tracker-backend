@@ -99,8 +99,8 @@ class DealsController < ApplicationController
                                      :d_quantity,
                                      :d_choot,
                                      :d_rate,
-                                     :f_actual_amount,
-                                     :d_actual_amount,
+                                     :vehicle_fare,
+                                     :labour_charge,
                                      :vehicle_date)
   end
 
