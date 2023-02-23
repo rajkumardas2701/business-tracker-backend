@@ -81,6 +81,11 @@ test:
 #
 production:
   <<: *default
-  database: business_tracker_backend_production
-  username: business_tracker_backend
-  password: <%= ENV["BUSINESS_TRACKER_BACKEND_DATABASE_PASSWORD"] %>
+  host: <%= ENV['AZURE_DB_HOST'] %>
+  port: 5432
+  database: <%= ENV['AZURE_DB_DATABASE'] %>
+  username: <%= ENV['AZURE_DB_USERNAME'] %>
+  password: <%= ENV['AZURE_DB_PASSWORD'] %>
+  # database: business_tracker_backend_production
+  # username: business_tracker_backend
+  # password: <%= ENV["BUSINESS_TRACKER_BACKEND_DATABASE_PASSWORD"] %>
