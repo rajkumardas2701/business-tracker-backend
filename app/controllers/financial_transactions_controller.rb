@@ -25,6 +25,7 @@ class FinancialTransactionsController < ApplicationController
   def create
     @tx = FinancialTransaction.new(transactions_params)
     if @tx.save
+      TransactionsMailer.with(tx: @tx).new_transaction_email.deliver_later
       txs = sort_by_date
       render json: {
                fts: txs,

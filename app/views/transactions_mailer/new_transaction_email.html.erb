@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>A new transaction is posted of amount: <%= @tx.amount %> </p>
+    <p>
+    Transaction details<br>
+    --------------------------
+    </p>
+    <p>Date: <%= @tx.date %></p>
+    <p>Amount: <%= @tx.amount %></p>
+    <p>Sent/Received: <%= @tx.send_receive %></p>
+    <p>Action by: <%= @tx.action_by %></p>
+    <p>
+    Remark:<br>
+    ----------
+    </p>
+    <p><%= @tx.remark %></p>
+  </body>
+</html>
