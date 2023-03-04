@@ -23,7 +23,7 @@ class FinancialTransactionsController < ApplicationController
   def show; end
 
   def create
-    @tx = FinancialTransaction.new(transactions_params)
+    @tx = FinancialTransaction.new(transactions_params.merge!(user_id: current_user))
     if @tx.save
       TransactionsMailer.with(tx: @tx).new_transaction_email.deliver_later
       txs = sort_by_date

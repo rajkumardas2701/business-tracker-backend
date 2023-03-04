@@ -4,7 +4,7 @@ class DealsController < ApplicationController
   rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
-    @deals = Deal.all
+    @deals = sort_deal_by_user
     if @deals
       render json: {
                deals: @deals,
@@ -13,7 +13,7 @@ class DealsController < ApplicationController
              status: :ok
     else
       render json: {
-               message: @deal.errors.full_messages,
+               message: @deals.errors.full_messages,
                deals: []
              },
              status: 500
@@ -38,15 +38,16 @@ class DealsController < ApplicationController
 
   def create
     @deal = Deal.new(modify_deal_attributes(deals_params).except(:vehicle, :date))
+    # byebug
     if @deal.save
       render json: {
-               deals: Deal.all,
+               deals: sort_deal_by_user,
                message: 'Deal is successfully created'
              },
              status: :ok
     else
       render json: {
-               deals: [],
+               deals: sort_deal_by_user,
                message: @deal.errors.full_messages
              },
              status: 500
@@ -55,8 +56,9 @@ class DealsController < ApplicationController
 
   def update
     if @deal.update(deals_params)
+      deals = sort_deal_by_user
       render json: {
-               deals: Deal.all,
+               deals: deals,
                message: 'Deal is updated'
              },
              status: :ok
@@ -70,9 +72,10 @@ class DealsController < ApplicationController
   end
 
   def destroy
-    if @deal.delete
+    if remove_deal_from_user(@deal)
+      deals = sort_deal_by_user
       render json: {
-               deals: Deal.all,
+               deals: deals,
                message: 'Deal is successfully deleted'
              },
              status: :ok
@@ -111,12 +114,13 @@ class DealsController < ApplicationController
   def modify_deal_attributes(deals_params)
     vehicle_date = { vehicle_date: deals_params[:vehicle] + deals_params[:date].gsub(/[^0-9a-zA-Z]/, '') }
     deals_params.merge!(vehicle_date)
+    deals_params.merge!(user_id: current_user)
   end
 
   def invalid_foreign_key
     render json: {
              deals: [],
-             message: 'Delete associated Transactions first'
+             message: 'Delete associated transactions first'
            },
            status: :unprocessable_entity
   end

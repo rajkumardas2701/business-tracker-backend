@@ -36,6 +36,15 @@ class ApplicationController < ActionController::API
   end
 
   def sort_by_date
-    FinancialTransaction.order(date: :desc)
+    set_user.financial_transactions.order(date: :desc)
+  end
+
+  def sort_deal_by_user
+    set_user.deals.order(updated_at: :desc)
+  end
+
+  def remove_deal_from_user(deal)
+    deal.update(user_id: nil) if deal.financial_transactions.count.zero?
+    deal.delete
   end
 end

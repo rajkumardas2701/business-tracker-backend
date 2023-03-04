@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authorize_request, except: :create
-  before_action :check_user, only: %i[show update destroy]
+  before_action :set_user, only: %i[show update destroy]
 
   def index
     @users = User.all
@@ -102,9 +102,9 @@ class UsersController < ApplicationController
 
   private
 
-  def check_user
-    @user = User.find(params[:id])
-  end
+  # def check_user
+  #   @user = User.find(params[:id])
+  # end
 
   def user_params
     params.require(:user).permit(:name, :phone, :email, :password)
