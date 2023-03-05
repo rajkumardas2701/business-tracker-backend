@@ -38,7 +38,6 @@ class DealsController < ApplicationController
 
   def create
     @deal = Deal.new(modify_deal_attributes(deals_params).except(:vehicle, :date))
-    # byebug
     if @deal.save
       render json: {
                deals: sort_deal_by_user,
