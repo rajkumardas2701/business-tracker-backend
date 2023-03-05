@@ -4,7 +4,7 @@ class DealsController < ApplicationController
   rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
-    @deals = sort_deal_by_user
+    @deals = Deal.all
     if @deals
       render json: {
                deals: @deals,
