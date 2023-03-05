@@ -4,7 +4,7 @@ class DealsController < ApplicationController
   rescue_from ActiveRecord::InvalidForeignKey, with: :invalid_foreign_key
 
   def index
-    @deals = Deal.all
+    @deals = sort_deal_by_user
     if @deals
       render json: {
                deals: @deals,
@@ -108,12 +108,6 @@ class DealsController < ApplicationController
 
   def fetch_deal
     @deal = Deal.find(params[:id])
-  end
-
-  def modify_deal_attributes(deals_params)
-    vehicle_date = { vehicle_date: deals_params[:vehicle] + deals_params[:date].gsub(/[^0-9a-zA-Z]/, '') }
-    deals_params.merge!(vehicle_date)
-    deals_params.merge!(user_id: current_user)
   end
 
   def invalid_foreign_key

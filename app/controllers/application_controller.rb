@@ -47,4 +47,10 @@ class ApplicationController < ActionController::API
     deal.update(user_id: nil) if deal.financial_transactions.count.zero?
     deal.delete
   end
+
+  def modify_deal_attributes(deals_params)
+    vehicle_date = { vehicle_date: deals_params[:vehicle] + deals_params[:date].gsub(/[^0-9a-zA-Z]/, '') }
+    deals_params.merge!(vehicle_date)
+    deals_params.merge!(user_id: current_user)
+  end
 end
