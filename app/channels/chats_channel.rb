@@ -1,15 +1,19 @@
 class ChatsChannel < ApplicationCable::Channel
   def subscribed
-    stream_for ChatRoom.find(params[:chat_room_id])
-    # stream_for @chatRoom
+    # chatroom = ChatRoom.find(params[:id])
+    stream_for "thread_#{params[:id]}"
   end
 
   def receive(data)
-    message = @chatRoom.messages.create(message: data['body'], user_id: current_user)
-    ChatsChannel.broadcast_to(@chatRoom, message: message.as_json)
+    ActionCable.server.broadcast("thread_#{params[:id]}", data)
   end
 
   # def unsubscribed
   #   # Any cleanup needed when channel is unsubscribed
+  # end
+
+  # private
+
+  # def fetch_room
   # end
 end

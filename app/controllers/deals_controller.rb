@@ -39,6 +39,7 @@ class DealsController < ApplicationController
   def create
     @deal = Deal.new(modify_deal_attributes(deals_params).except(:vehicle, :date))
     if @deal.save
+      broadcast_to_channel
       render json: {
                deals: sort_deal_by_user,
                message: 'Deal is successfully created'
@@ -51,13 +52,15 @@ class DealsController < ApplicationController
              },
              status: 500
     end
+    # return unless @deal.valid?
+    # broadcast_to_channel
   end
 
   def update
     if @deal.update(deals_params)
-      deals = sort_deal_by_user
+      broadcast_to_channel
       render json: {
-               deals: deals,
+               deals: sort_deal_by_user,
                message: 'Deal is updated'
              },
              status: :ok
@@ -68,13 +71,15 @@ class DealsController < ApplicationController
              },
              status: 500
     end
+    # return unless @deal.valid?
+    # broadcast_to_channel
   end
 
   def destroy
     if remove_deal_from_user(@deal)
-      deals = sort_deal_by_user
+      broadcast_to_channel
       render json: {
-               deals: deals,
+               deals: sort_deal_by_user,
                message: 'Deal is successfully deleted'
              },
              status: :ok
@@ -85,6 +90,8 @@ class DealsController < ApplicationController
              },
              status: 500
     end
+    # return unless @deal.valid?
+    # broadcast_to_channel
   end
 
   private
@@ -116,5 +123,12 @@ class DealsController < ApplicationController
              message: 'Delete associated transactions first'
            },
            status: :unprocessable_entity
+  end
+
+  def broadcast_to_channel
+    ActionCable.server.broadcast("deals_user_#{current_user}", {
+                                   deals: sort_deal_by_user,
+                                   message: 'Deal list updated'
+                                 })
   end
 end
