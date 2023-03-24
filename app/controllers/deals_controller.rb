@@ -52,8 +52,9 @@ class DealsController < ApplicationController
              },
              status: 500
     end
-    # return unless @deal.valid?
-    # broadcast_to_channel
+    return unless @deal.valid?
+
+    broadcast_to_channel
   end
 
   def update
@@ -128,7 +129,7 @@ class DealsController < ApplicationController
   def broadcast_to_channel
     ActionCable.server.broadcast("deals_user_#{current_user}", {
                                    deals: sort_deal_by_user,
-                                   message: 'Deal list updated'
+                                   message: 'Update received in deal'
                                  })
   end
 end
