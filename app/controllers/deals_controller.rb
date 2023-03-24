@@ -52,9 +52,9 @@ class DealsController < ApplicationController
              },
              status: 500
     end
-    return unless @deal.valid?
+    # return unless @deal.valid?
 
-    broadcast_to_channel
+    # broadcast_to_channel
   end
 
   def update
