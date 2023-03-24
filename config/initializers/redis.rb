@@ -1,8 +1,8 @@
 require 'redis'
 
-redis_host = ENV["REDIS_HOST"]
-redis_port = ENV["REDIS_PORT"]
-redis_password = ENV["REDIS_ACCESS_KEY"]
+redis_host: ENV.fetch('REDIS_HOST')
+redis_port: ENV.fetch('REDIS_PORT')
+redis_password: ENV.fetch('REDIS_ACCESS_KEY')
 
 redis = Redis.new(
   host: redis_host,
