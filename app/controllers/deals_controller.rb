@@ -39,7 +39,7 @@ class DealsController < ApplicationController
   def create
     @deal = Deal.new(modify_deal_attributes(deals_params).except(:vehicle, :date))
     if @deal.save
-      broadcast_to_channel
+      # broadcast_to_channel
       render json: {
                deals: sort_deal_by_user,
                message: 'Deal is successfully created'
@@ -59,7 +59,7 @@ class DealsController < ApplicationController
 
   def update
     if @deal.update(deals_params)
-      broadcast_to_channel
+      # broadcast_to_channel
       render json: {
                deals: sort_deal_by_user,
                message: 'Deal is updated'
@@ -78,7 +78,7 @@ class DealsController < ApplicationController
 
   def destroy
     if remove_deal_from_user(@deal)
-      broadcast_to_channel
+      # broadcast_to_channel
       render json: {
                deals: sort_deal_by_user,
                message: 'Deal is successfully deleted'
