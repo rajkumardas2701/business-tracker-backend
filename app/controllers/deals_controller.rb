@@ -126,10 +126,10 @@ class DealsController < ApplicationController
            status: :unprocessable_entity
   end
 
-  def broadcast_to_channel
-    ActionCable.server.broadcast("deals_user_#{current_user}", {
-                                   deals: sort_deal_by_user,
-                                   message: 'Update received in deal'
-                                 })
-  end
+  # def broadcast_to_channel
+  #   ActionCable.server.broadcast("deals_user_#{current_user}", {
+  #                                  deals: sort_deal_by_user,
+  #                                  message: 'Update received in deal'
+  #                                })
+  # end
 end
