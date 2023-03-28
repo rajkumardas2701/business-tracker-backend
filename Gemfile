@@ -49,9 +49,9 @@ end
 
 # project related
 
+gem 'active_model_serializers'
 gem 'bcrypt', '~> 3.1', '>= 3.1.7', platforms: :ruby
 gem 'figaro'
 gem 'jwt'
 gem 'rack-cors'
 gem 'rubocop', '>= 1.0', '< 2.0'
-gem 'active_model_serializers'
