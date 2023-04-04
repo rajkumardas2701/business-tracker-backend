@@ -1,0 +1,39 @@
+.transaction-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.transaction-details {
+  width: 400px;
+  margin: 0 auto;
+  border: 1px solid black;
+
+  /* border-collapse: collapse; */
+}
+
+.transaction-details td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.transaction-details td:first-child {
+  font-weight: bold;
+  width: 150px;
+}
+
+.transaction-details td:last-child {
+  text-align: right;
+}
+
+.new-transact-container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.transaction-body {
+  width: 100%;
+}
+
+.tx-value {
+  font-family: 'Courier New', Courier, monospace;
+}
